@@ -6,55 +6,61 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import dev.brayanht.hellojetpackcompose.ui.theme.HelloJetPackComposeTheme
-
+import androidx.compose.ui.unit.dp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Text("Hola Mundo")
-            Text("Bienvenido a ESAN")
-            Text("Desarrollo movil")
-            Text("2026-2")
+            FormularioIMC()
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun HelloComposeForm(){
-    var name by remember { mutableSetOf(value = "") }
+fun FormularioIMC() {
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = {Text("Hola")})
-        }
-    ) { padding ->
-        Column(modifier = Modifier
-            .padding(paddingValues = padding)
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text("Bienvenido a Jetpack compose")
-            OutlinedTextField(
-                value = "",
+    var peso by remember { mutableStateOf("") }
+    var talla by remember { mutableStateOf("") }
+    var resultado by remember { mutableStateOf("") }
 
-            )
+    Column(
+        modifier = Modifier.padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+
+        Text("Calculadora IMC")
+
+        OutlinedTextField(
+            value = peso,
+            onValueChange = { peso = it },
+            label = { Text("Peso") }
+        )
+
+        OutlinedTextField(
+            value = talla,
+            onValueChange = { talla = it },
+            label = { Text("Talla") }
+        )
+
+        Button(onClick = {
+            val imc = peso.toDouble() / (talla.toDouble() * talla.toDouble())
+            resultado = imc.toString()
+        }) {
+            Text("Calcular")
         }
+
+        Text("Resultado: $resultado")
     }
-
-
-
 }
